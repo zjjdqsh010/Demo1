@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+
+<!-- 表格插件 -->
+<link rel="stylesheet" href="${ctx}/assets/css/bootstrap-extend.css">
+<link rel="stylesheet" href="${ctx}/assets/vendor/formvalidation/formValidation.min.css?v=v0.8.1">
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">  
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<head>
+<meta charset="utf-8">
+<title>测试页面</title>
+</head>
+<style>
+.invalid-feedback {
+    display: none;
+    margin-top: .25rem;
+    font-size: .875rem;
+    color: #ff4c52;
+}
+</style>
+<body>
+
+	<#include "../include/page-header.html"/>
+<div class="container">
+	<div class="row" style=" margin-right: -250px; margin-left: -250px;">
+		<div class="col-sm-2">
+			<h3>链接</h3>
+			<p>描述文本。</p>
+			<ul class="nav nav-pills nav-stacked">
+				<li <#if nav == "home">class="active"</#if>><a href="${ctx}/home">主页</a></li>
+				<li <#if nav == "maintain">class="active"</#if>><a href="${ctx}/cd">专辑管理</a></li>
+				<li <#if nav == "edit">class="active"</#if>><a href="${ctx}/edit">编辑</a></li>
+				<li <#if nav == "other">class="active"</#if>><a href="#">用户评价（暂定）</a></li>
+			</ul>
+			<hr class="hidden-sm hidden-md hidden-lg">
+		</div>
+		<div class="col-sm-10" style="background-color: #c5b4b4;padding-top:10px">
+			<div class="page-content container-fluid">
+				<form class="form-horizontal" id="dataForm" autocomplete="off">
+					<div class="row">
+						<div class="panel">
+							<div class="panel-heading">
+								<h5 class="panel-title">专辑信息</h5>
+							</div>
+							<div class="panel-body p-10">
+								<div class="form-group row pt-10">
+									<label class="col-md-3 form-control-label">专辑名称：
+									 <span class="required" style="color: red;">*</span>
+									</label>
+									<div class="col-md-6">
+										<input type="text" class="form-control" name="entity.cdName" value="${entity.cdName!''}" placeholder="请输入专辑名称" />
+									</div>
+								</div>
+							</div>
+							<div class="panel-body p-10">
+								<div class="form-group row pt-10">
+									<label class="col-md-3 form-control-label">作者：
+									 <span class="required" style="color: red;">*</span>
+									</label>
+									<div class="col-md-6">
+										<input type="text" class="form-control" name="entity.author" value="${entity.author!''}" placeholder="请输入作者" />
+									</div>
+								</div>
+							</div>
+							<div class="panel-body p-10">
+								<div class="form-group row">
+									<label class="col-md-3 form-control-label">专辑类型：
+									 <span class="required" style="color: red;">*</span>
+									</label>
+									<div class="col-md-6">
+										<div class="input-group">
+											<select class="form-control" name="entity.type" >
+												<option value="">请选择</option>
+												<#if statusList??>
+												<#list statusList as been>
+												<option value="${been!}" <#if (entity.type!'') == been>selected="selected"</#if>>
+													${been!''}
+												</option>
+												</#list>
+												</#if>
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="panel-body p-10">
+								<div class="form-group row">
+									<label class="col-md-3 form-control-label">专辑价格：
+									 <span class="required" style="color: red;">*</span>
+									</label>
+									<div class="col-md-6">
+										<input type="text" class="form-control" name="entity.price" value="${entity.price!''}" placeholder="请输入专辑价格" />
+									</div>
+								</div>
+							</div>
+							<div class="panel-body p-10">
+								<div class="form-group row">
+									<div class="col-md-12">
+										<button type="submit" id="btnSubmit" class="btn btn-primary" ><i class="fa fa-save"></i> 保存</button>
+										<button type="reset" class="btn btn-default" >重置</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="jumbotron text-center" style="margin-bottom:0">
+	<#include "../include/page-footer.html"/>
+</div>
+
+<script src="${ctx}/assets/vendor/formvalidation/formValidation.min.js?v=v0.8.1"></script>
+<script src="${ctx}/assets/vendor/formvalidation/framework/bootstrap4.min.js?v=v0.8.1"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	registerDataFormValidate();
+});
+	//提交信息验证
+	function registerDataFormValidate() {
+		$('#dataForm').formValidation({
+			framework : "bootstrap4",
+			button : {
+				selector : '#btnSubmit',
+				disabled : 'disabled'
+			},
+			icon : null,
+			fields : {
+				"entity.cdName" : {
+					validators : {
+						notEmpty : {
+							message : '请输入标题'
+						}
+					}
+				},
+				"entity.author" : {
+					validators : {
+						notEmpty : {
+							message : '请输入作者'
+						}
+					}
+				},
+				"entity.type" : {
+					validators : {
+						notEmpty : {
+							message : '请选择专辑类型'
+						}
+					}
+				},
+				"entity.price" : {
+					trigger : 'change',
+					validators : {
+						notEmpty : {
+							message : '请输入专辑价格'
+						},
+						numeric : {
+							message : '请输入数字'
+						},
+						between : {
+							message : '别墅价格大于0',
+							min: 0,
+							max: 9999999999.99
+						}
+					}
+				}
+			},
+			err : {
+				clazz : 'invalid-feedback'
+			},
+			control : {
+				valid : 'is-valid',
+				invalid : 'is-invalid'
+			},
+			row : {
+				invalid : 'has-danger'
+			},
+			success:{
+				
+			}
+		}).on('success.form.fv',function(e){
+			e.preventDefault();
+			var $form = $(e.target),
+				fv = $(e.target).data('formValidation');
+			$.ajax({
+				url :"${ctx}/edit/saveOrUpdate",
+				type : 'POST',
+				data : $form.serialize(),
+				dataType : "json",
+				success: function(result){
+					if(result.state == "ok"){
+						alertify.success("保存成功");
+						<#if !(entity.id??)>
+							alertify.confirm("保存成功，是否继续添加专辑?", function () {
+								location.reload();
+							}, function () {
+								goBack(result.data);
+							});
+						<#else>
+							goBack(result.data);
+						</#if>
+					}else{
+						//加入token问题
+						if(result.formToken){
+							$("input[name ='formToken"+$("input[name ='formTokenSuffix']").val()+"']").val(result.formToken);
+						}
+						resultErr(result);
+					}
+				}
+			});
+		});
+	}
+	//返回
+	function goBack(id){
+		location.href = "${ctx}/cd?from=edit";
+	}
+</script>
+</body>
+</html>

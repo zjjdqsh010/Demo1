@@ -1,0 +1,96 @@
+<!--复制进入环境运行时，记得引入vue.js文件，放在js文件中-->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+	<div id="app">
+		<h5>１．数据单向驱动文本:--{{}}--</h5>
+		{{ message }}
+		<h5>２．数据单向驱动属性:--:title--</h5>
+		<p :title="message">{{ message }}</p>
+		<h5>3.使用 v-model 实现双向数据绑定:--v-model--</h5>
+		<input type="checkbox" v-model="ok">{{ok}}
+		<h5>4.多选的实现:--v-model--</h5>
+		<template v-for="n in 5"> <input type="checkbox"
+			@click="pri" :value="n" v-model="ids">{{n}} </template>
+		<!-- 		<input type="checkbox" value="1" v-model="ids">1 <input -->
+		<!-- 			type="checkbox" value="2" v-model="ids">2 <input -->
+		<!-- 			type="checkbox" value="3" v-model="ids">3 <input -->
+		<!-- 			type="checkbox" value="4" v-model="ids">4 <input -->
+		<!-- 			type="checkbox" value="5" v-model="ids">5 -->
+		<h5>５．循环的实现:--v-for---</h5>
+		<template v-for="n in nums"> <input type="checkbox"
+			:value="n" v-model="ids">{{n}} </template>
+		<h5>6.对象的概念:--user.---</h5>
+		<div>
+			用户名：<input type="text" v-model="user.id"> 密 码：<input
+				type="password" v-model="user.pwd"> {{user}}
+		</div>
+		<h5>7.条件判断:--v-if---</h5>
+		<div>
+			勾选显示内容:<input type="checkbox" v-model="ok"> <span v-if="ok">我在故我思</span>
+		</div>
+		<h5>８．事件的使用:--mouseover,mouseout,click--</h5>
+		<div style="display: flex; flex-direction: row;">
+			<div @click="myfun" v-on:mouseover="onover($event)"
+				@mouseout="onout($event)" v-for="n in 10"
+				style="height: 80px; width: 30px; border: 1px solid blue; margin: 5px;">{{n}}</div>
+		</div>
+		<h5>9.预先加载省份</h5>
+		<select v-model="prov">
+			<option value=“-1”>请选择</option>
+			<option v-for="item in mydata" :value="item.value">{{item.name}}</option>
+		</select> {{prov}}
+	</div>
+
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://apps.bdimg.com/libs/vue/1.0.14/vue.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.min.js"></script>
+	<script>
+	const vm = new Vue({
+		el: '#app', //vue渲染到元素
+		data: { //定义vue中的数据
+			//文本信息
+			message: "Hello Vue!",
+			//数据类型
+			ok: false,
+			show: false,
+			//数组
+			ids: [],
+			//数组
+			nums: [25, 56, 54, 57, 8, 9, 62, 32, 12],
+			//对象
+			user: {},
+			mydata:[],
+			prov:'',
+			},
+			methods: { //定义ｖｕｅ中的方法
+				onover(e){
+					e.target.style.backgroundColor='red';
+				},
+				onout(e){
+					e.target.style.backgroundColor='transparent';
+				},
+				myfun(){
+					alert(parseInt(Math.random()*10));
+				},
+				pri(){
+					alert(this.ids);
+				}
+			},
+			created(){ //渲染完成之后的回调函数（钩子函数）
+				this.mydata=[
+					{value:'北京市',name:'北京市'},
+					{value:'陕西省',name:'陕西省'},
+					{value:'重庆市',name:'重庆市'},
+					{value:'广东市',name:'广东市'},
+					{value:'甘肃市',name:'甘肃市'},  
+				]
+			}
+		});
+	</script>
+</body>
+
+</html>

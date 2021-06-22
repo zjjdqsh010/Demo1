@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>${date!''}</title>
+
+</head>
+
+<body>
+	<style>
+#app {
+	width: 990px;
+	padding: 0 15px;
+	margin: 0 auto;
+}
+</style>
+	<div id="app">
+		<my-title></my-title>
+		<div id="divTblBook">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th v-for="b in bookShow">{{ b }}</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="item in books">
+						<td v-for="b in item">{{ b }} <input type="text"
+							class="form-control" v-model="b">
+						</td>
+						<td>
+							<button class="btn btn-primary" v-on:click="delBook(item)">删除</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div id="divAddBook">
+			<p>添加书籍</p>
+			<div v-for="b in bookShow">
+				<div class="form-group">
+					<label>{{ b }}</label> <input type="text" class="form-control"
+						v-model="book[$key]">
+				</div>
+			</div>
+			<button class="btn btn-primary" v-on:click="addBook()">添加</button>
+		</div>
+
+		<button class="btn btn-danger" v-on:click="test()">上传</button>
+	</div>
+	<link
+		href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.css"
+		rel="stylesheet" />
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://apps.bdimg.com/libs/vue/1.0.14/vue.js"></script>
+	<script>
+		var vm = new Vue({
+			el : "#app",
+			components : {
+				'my-title' : {
+					template : '<h1 v-text="title"></h1>',
+					data : function() {
+						return {
+							title : '世界名著'
+						}
+					}
+				}
+			},
+			data : {
+				books : [ {
+					author : '曹雪芹',
+					name : '红楼梦',
+					price : 32.0,
+					stype : "爱情"
+				}, {
+					author : '施耐庵',
+					name : '水浒传',
+					price : 30.0,
+					stype : "兄弟"
+				}, {
+					author : '罗贯中',
+					name : '三国演义',
+					price : 24.0,
+					stype : "历史"
+				}, {
+					author : '吴承恩',
+					name : '西游记',
+					price : 20.0,
+					stype : "魔幻"
+				} ],
+				book : {
+					Name : '',
+					Author : '',
+					price : '',
+					stype : ""
+				},
+				bookShow : {
+					Name : "书名",
+					Author : "作者",
+					price : "价格",
+					stype : "风格"
+				},
+				date : new Date()
+			},
+			methods : {
+				addBook : function() {
+					this.books.push(this.book);
+					this.book = "";
+				},
+				delBook : function(book) {
+					this.books.$remove(book);
+				},
+				test : function() {
+					data_to_send = this.books;
+					data_to_send = JSON.stringify(data_to_send);//数据转换成JSON
+					console.log(data_to_send);
+					$.post('${ctx}/vuetest/test', 'test=' + data_to_send, //传递给后台的JSON数据
+					function(r, err) {
+						if (err === 'success') {
+							alert(r);
+						} else {
+							alert(err);
+							return console.log(err);
+						}
+
+					});
+				}
+			}
+		})
+	</script>
+</body>
+
+</html>
