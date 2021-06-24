@@ -14,7 +14,7 @@
 		<input type="checkbox" v-model="ok">{{ok}}
 		<h5>4.多选的实现:--v-model--</h5>
 		<template v-for="n in 5"> <input type="checkbox"
-			@click="pri" :value="n" v-model="ids">{{n}} </template>
+			 :value="n" v-model="ids" @click="pri">{{n}} </template>
 		<!-- 		<input type="checkbox" value="1" v-model="ids">1 <input -->
 		<!-- 			type="checkbox" value="2" v-model="ids">2 <input -->
 		<!-- 			type="checkbox" value="3" v-model="ids">3 <input -->
@@ -25,7 +25,10 @@
 			:value="n" v-model="ids">{{n}} </template>
 		<h5>6.对象的概念:--user.---</h5>
 		<div>
-			用户名：<input type="text" v-model="user.id"> 密 码：<input
+			用户名：
+			<input type="text" v-model="user.id"> 
+			密 码：
+			<input
 				type="password" v-model="user.pwd"> {{user}}
 		</div>
 		<h5>7.条件判断:--v-if---</h5>
@@ -34,9 +37,9 @@
 		</div>
 		<h5>８．事件的使用:--mouseover,mouseout,click--</h5>
 		<div style="display: flex; flex-direction: row;">
-			<div @click="myfun" v-on:mouseover="onover($event)"
-				@mouseout="onout($event)" v-for="n in 10"
-				style="height: 80px; width: 30px; border: 1px solid blue; margin: 5px;">{{n}}</div>
+			<div @click="myfun" v-on:mouseover="onover($event)" v-model="clickNum"
+				@mouseout="onout($event)" v-for="n in 10" :value="n"
+				style="height: 80px; width: 30px; border: 1px solid blue; margin: 5px;">{{n}}</div>{{clickNum}}
 		</div>
 		<h5>9.预先加载省份</h5>
 		<select v-model="prov">
@@ -57,6 +60,7 @@
 			//数据类型
 			ok: false,
 			show: false,
+			clickNum: [],
 			//数组
 			ids: [],
 			//数组
@@ -74,6 +78,7 @@
 					e.target.style.backgroundColor='transparent';
 				},
 				myfun(){
+					console.log(this.clickNum);
 					alert(parseInt(Math.random()*10));
 				},
 				pri(){

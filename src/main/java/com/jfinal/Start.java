@@ -4,9 +4,6 @@ package com.jfinal;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
-
-import com.jfinal.api.Cd;
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
 import com.jfinal.config.Interceptors;
@@ -21,17 +18,12 @@ import com.jfinal.core.JFinal;
 import com.jfinal.ext.handler.ContextPathHandler;
 import com.jfinal.ext.handler.UrlSkipHandler;
 import com.jfinal.json.FastJsonFactory;
-import com.jfinal.kit.Prop;
-import com.jfinal.kit.PropKit;
-import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
-import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.render.FreeMarkerRender;
 import com.jfinal.render.ViewType;
 import com.jfinal.template.Engine;
-import com.jfinal.template.source.ClassPathSourceFactory;
 import com.jfinal.vue.VueDemo1;
 import com.jfinal.vue.VueDemo2;
-import com.mj.druid.ConsoleSqlFilter;
+import com.jfinal.vue.VueDemo3;
 import com.mj.interceptor.ErrorInterceptor;
 import com.mj.interceptor.SessionInViewInterceptor;
 
@@ -67,6 +59,7 @@ public class Start extends JFinalConfig {
         me.add("/edit", CdEditController.class,"");
         me.add("/vuetest", VueDemo1.class,"vue");
         me.add("/vuetest2", VueDemo2.class,"vue");
+        me.add("/vuetest3", VueDemo3.class,"vue");
     }
  
     public void configEngine(Engine me) {
